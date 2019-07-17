@@ -32,106 +32,6 @@ def CountLines(fn):
   return cnt
  
 
-def hemnet2csv20(fn1, fn2):
-  # Version 2.0
-  #
-#L1 Fyrvaktarkroken 26
-#L2 Bostadsrättslägenhet Blåsut, Stockholm
-#L3 47 m²   2 rum
-#L4 3 133 kr/man
-#L5 Slutpris 3 100 000 kr
-#L6 Såld 13 juli 2019
-#L7 95 652 kr/m²
-#L8 +19 %
-#L9 
-#L10 Fastighetsbyran Enskede
-  #
-  linelast = ["" for x in range(22)]
-  lc = -1
-  cnt = 0
-  with open(fn2,mode='w') as fout:
-    fout.write('A,B,C,D,E,F,G,H')
-    fout.write("\n")
-    with open(fn1,mode='r') as f:
-      line  = f.readline().replace('\n', '') # read first line - dummy line / comment
-      while line:
-        line  = f.readline()
-        #line  = f.readline().replace('\n', '')
-        #lineRaw  = f.readline()
-        testline = line.strip()
-		#line  = lineRaw.replace('\n', '')
-        #if testline.find('Slutpris')>=0:
-        #  print('TEST', cnt,' ',lc,' ',testline,' ',(testline.find('Slutpris')>=0),'TXT',line)
-        #		  
-        if (testline.find('Slutpris')>=0):
-          #lineout=line.strip()
-          #line6 = f.readline().replace('\n', '')
-          #line7 = f.readline().replace('\n', '')
-          #line8 = f.readline().replace('\n', '')
-          #line9 = f.readline().replace('\n', '')
-          #line10 = f.readline().replace('\n', '')
-          #
-          #line6 = f.readline().strip()
-          #line7 = f.readline().strip()
-          #line8 = f.readline().strip()
-          #line9 = f.readline().strip()
-          #line10 = f.readline().strip()
-          #
-          lc +=1
-          linelast[lc] = line.strip()
-          linelast[lc+1] = f.readline().strip()
-          linelast[lc+2] = f.readline().strip()
-          linelast[lc+3] = f.readline().strip()
-          linelast[lc+4] = f.readline().strip()
-          #linelast[lc+5] = f.readline().strip()
-          #linelast[lc]= f.readline().replace('\n', '')
-          #
-          cnt += 1
-          fout.write(linelast[lc-4]) # line1
-          fout.write(',')
-          fout.write(linelast[lc-3]) # line2
-          fout.write(',')
-          fout.write(linelast[lc-2]) # line3
-          fout.write(',')
-          fout.write(linelast[lc-1])  #4
-          fout.write(',')
-          fout.write(linelast[lc])  #?
-          #fout.write(',')
-          #fout.write(lineout)  #5
-          #fout.write(',')
-          #fout.write(line6)  #6
-          #fout.write(',')
-          #fout.write(line7)  #7
-          #fout.write(',')
-          #fout.write(line8)  #8
-          #fout.write(',')
-          #fout.write(line9)  #9
-          #fout.write(',')
-          #fout.write(line10)  #10
-          fout.write(',')
-          fout.write(linelast[lc+1])  #10
-          fout.write(',')
-          fout.write(linelast[lc+2]) 
-          fout.write(',')
-          fout.write(linelast[lc+3]) 
-          fout.write(',')
-          fout.write(linelast[lc+4]) 
-          #fout.write(',')
-          #fout.write(linelast[lc+5]) 
-          fout.write('\n')
-          print('OUT',lc,' ',cnt,linelast[lc-4],linelast[lc-3],linelast[lc-2],linelast[lc-1],linelast[lc],linelast[lc+1],linelast[lc+2],linelast[lc+3],linelast[lc+4],linelast[+5])
-          lc = -1
-          linelast = ["" for x in range(22)] # reset
-        else:
-          lc +=1
-          linelast[lc]=line.replace('\n', '')
-          print(lc,'linelast',linelast[lc])
-  #
-  f.close()
-  fout.close()
-  return cnt
-
-
 def hemnet2csv30(fn1, fn2):
   # Version 3.0
   #
@@ -321,19 +221,20 @@ def deleteVaning(str1):
 
 
 #!conda install -c conda-forge geopy --yes # uncomment this line if you haven't completed the Foursquare API lab
-from geopy.geocoders import Nominatim # convert an address into latitude and longitude values
+#from geopy.geocoders import Nominatim # convert an address into latitude and longitude values
 
-def GetLatLong(myaddress):
-    geolocator = Nominatim(user_agent="ny_explorer")
-    location = geolocator.geocode(myaddress)
-    latitude = location.latitude
-    longitude = location.longitude
-    return latitude, longitude
+#def GetLatLong(myaddress):
+#    geolocator = Nominatim(user_agent="ny_explorer")
+#    location = geolocator.geocode(myaddress)
+#    latitude = location.latitude
+#    longitude = location.longitude
+#    return latitude, longitude
+
 
 # test geocoder
 streetaddress= 'Torsgatan 3, Stockholm, Sweden'
-latitude, longitude = GetLatLong(streetaddress)
-print('The geograpical coordinate of {} are {}, {}.'.format(streetaddress, latitude, longitude))
+#latitude, longitude = GetLatLong(streetaddress)
+#print('The geograpical coordinate of {} are {}, {}.'.format(streetaddress, latitude, longitude))
 
 
 def hemnetlocationtable(fn1, fn2):
@@ -345,7 +246,7 @@ def hemnetlocationtable(fn1, fn2):
   lc = -1
   cnt = 0
   with open(fn2,mode='w') as fout:
-    fout.write('Lat,Long,Street,PriceSEK,PriceSQM,Size')
+    fout.write('Lat,Long,Street,Dummy1,PriceSEK,PriceSQM,Dummy2')
     fout.write("\n")
     with open(fn1,mode='r') as f:
       line  = f.readline().replace('\n', '') # read first line - dummy line / comment
@@ -371,34 +272,36 @@ def hemnetlocationtable(fn1, fn2):
              tmpstr=linelast[0]
              if linelast[0].find(linelast[1])<0:
                tmpstr+=','+linelast[1]
-               tmpstr+=','+linelast[2]+',Stockholm,Sweden'
+               tmpstr+=','+linelast[2]+',Sweden'
              else:
                tmpstr+=','+linelast[2]
-               tmpstr+=','+linelast[3]+',Stockholm,Sweden'
+               tmpstr+=','+linelast[3]+',Sweden'
 			 #
 			 #tmpstr+=','+linelast[3]+',Stockholm,Sweden'
 			 #
 			 # get geolocation
-             streetaddress=tmpstr
+             streetaddress=tmpstr.replace(',', ':')
              latitude=0.0
              longitude=0.0
-			 latitude, longitude = GetLatLong(streetaddress)
-             print('Address',streetaddress,latitude,longitude)
+			 #latitude, longitude = GetLatLong(streetaddress)
+             print('Address',streetaddress,' ',latitude,' ',longitude)
           #
           cnt += 1
 		  #
-          fout.write(str(latitude)) # line1
+          fout.write(str(latitude)) # Lat
           fout.write(',')
-          fout.write(str(longitude)) # line2
+          fout.write(str(longitude)) # Long
           fout.write(',')
-          fout.write(streetaddress) # line3
+          fout.write(streetaddress) # address
 		  #
           for xc in range(3,len(linelast)):
             if (linelast[xc].find('SLUTPRISSEK')>=0):
+              linelast[xc]=linelast[xc].replace(' ', ',')
               fout.write(',')
               fout.write(linelast[xc])
               print(',',linelast[xc])
             if (linelast[xc].find('KR/M2')>=0):
+              linelast[xc]=linelast[xc].replace(' ', ',')
               fout.write(',')
               fout.write(linelast[xc])
               print(',',linelast[xc])			  
